@@ -37,3 +37,9 @@ a {
   color: inherit;
   text-decoration: none;
 }
+
+.load-more {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
+}
