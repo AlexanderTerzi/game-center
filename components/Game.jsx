@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import themes from '@/styles/themes';
 import noimage from '../assets/noimage.jpg';
@@ -14,7 +14,7 @@ const Game = ({ values, click }) => {
     const { name, background_image } = values;
 
     return (
-        <GameBlock theme={currentTheme}>
+        <GameBlock theme={currentTheme} onClick={click}>
             <div className="image">
                 <Image
                     src={!background_image ? noimage : background_image}

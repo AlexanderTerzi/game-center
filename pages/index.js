@@ -3,25 +3,28 @@ import styled from 'styled-components';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchGames, setPerPage } from '@/redux/slices/gamesSlice';
+import { fetchSingleGame, setOpenModal } from '@/redux/slices/singleGameSlice';
 
 import Game from '@/components/Game';
 import Layout from '@/components/Layout';
 import MainContent from '@/components/MainContent';
 import Button from '@/components/Button';
-import { down } from '@/utils/icons';
-import themes from '@/styles/themes';
 import Loader from '@/components/Loader';
 
-export default function Home() {
+import { down } from '@/utils/icons';
+import themes from '@/styles/themes';
+
+
+
+export default function Home({ query }) {
   const dispatch = useDispatch();
-  const { games } = useSelector((state) => state.games);
-  const { perPage } = useSelector((state) => state.games);
+  const { games, perPage, status } = useSelector((state) => state.games);
   const { theme } = useSelector((state) => state.theme);
-  const { status } = useSelector((state) => state.games);
+  const { openModal } = useSelector((state) => state.singleGame);
   const currentTheme = themes[theme];
 
   useEffect(() => {
-    const fetchProducts = (async () => {
+    const fetchAllgames = (async () => {
       dispatch(fetchGames({ perPage }));
     })();
 
@@ -29,6 +32,14 @@ export default function Home() {
 
   const handleCLickPerPage = () => {
     dispatch(setPerPage(perPage + 6));
+  };
+
+  const fetchGame = async (id) => {
+    dispatch(fetchSingleGame({ id }));
+  };
+
+  const handleModal = (id) => {
+    dispatch(setOpenModal(id))
   }
 
   return (
@@ -44,6 +55,10 @@ export default function Home() {
                       <Game
                         key={game.id}
                         values={{ ...game }}
+                        click={() => {
+                          fetchGame(game.id)
+                          handleModal(game.id)
+                        }}
                       />
                     ))
                   }

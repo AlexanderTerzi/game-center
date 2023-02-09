@@ -6,3 +6,6 @@ export const fire = <i className="fa-solid fa-fire-flame-curved"></i>
 export const home = <i className="fa-solid fa-house"></i>
 export const moon = <i className="fa-solid fa-moon"></i>
 export const down = <i className="fa-solid fa-caret-down"></i>
+export const play = <i className="fa-solid fa-play"></i>
+export const star = <i className="fa-solid fa-star"></i>
+export const starHalf = <i className="fa-solid fa-star-half"></i>

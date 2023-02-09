@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from 'axios';
 
+import { API_URL } from "@/utils/API_URL";
 import { API_KEY } from "../../config";
-const gamesBaseURL = `https://api.rawg.io/api/games?key=${API_KEY}`;
 
 export const fetchGames = createAsyncThunk(
     'games/fetchGames',
@@ -10,7 +10,7 @@ export const fetchGames = createAsyncThunk(
         const { perPage } = params;
 
         const res = await axios.get(
-            `${gamesBaseURL}&page_size=${perPage}`
+            `${API_URL}?key=${API_KEY}&page_size=${perPage}`
         );
 
         return thunkAPI.fulfillWithValue(res.data);
