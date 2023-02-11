@@ -10,13 +10,14 @@ import logo from '../assets/logo.svg';
 import Search from './Search';
 import Button from './Button';
 import { setMenuToggle } from '@/redux/slices/UISlice';
+import { useRouter } from 'next/router';
 
 
 const Header = () => {
     const dispatch = useDispatch();
+    const { pathname } = useRouter();
     const { theme } = useSelector(state => state.theme);
     const { menuOpened } = useSelector(state => state.UI);
-
     const currentTheme = themes[theme];
 
     const handleClickMenu = () => {
@@ -39,9 +40,13 @@ const Header = () => {
                 </div>
             </div>
             <div className="user">
-                <div className="user-form">
-                    <Search />
-                </div>
+                {
+                    pathname === '/' && (
+                        <div className="user-form">
+                            <Search />
+                        </div>
+                    )
+                }
                 <button className='user-button'>
                     {moon}
                 </button>

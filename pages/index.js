@@ -14,21 +14,20 @@ import Loader from '@/components/Loader';
 import { down } from '@/utils/icons';
 import themes from '@/styles/themes';
 
-
-
-export default function Home({ query }) {
+export default function Home() {
   const dispatch = useDispatch();
   const { games, perPage, status } = useSelector((state) => state.games);
   const { theme } = useSelector((state) => state.theme);
+  const { searchQuery } = useSelector((state) => state.search);
   const { openModal } = useSelector((state) => state.singleGame);
   const currentTheme = themes[theme];
 
   useEffect(() => {
     const fetchAllgames = (async () => {
-      dispatch(fetchGames({ perPage }));
+      dispatch(fetchGames({ perPage, searchQuery }));
     })();
 
-  }, [perPage]);
+  }, [perPage, searchQuery]);
 
   const handleCLickPerPage = () => {
     dispatch(setPerPage(perPage + 6));

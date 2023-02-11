@@ -7,10 +7,10 @@ import { API_KEY } from "../../config";
 export const fetchGames = createAsyncThunk(
     'games/fetchGames',
     async (params, thunkAPI) => {
-        const { perPage } = params;
+        const { perPage, searchQuery } = params;
 
         const res = await axios.get(
-            `${API_URL}?key=${API_KEY}&page_size=${perPage}`
+            `${API_URL}?key=${API_KEY}&page_size=${perPage}&search=${searchQuery}`
         );
 
         return thunkAPI.fulfillWithValue(res.data);

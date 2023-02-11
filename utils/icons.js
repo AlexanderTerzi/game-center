@@ -9,3 +9,4 @@ export const down = <i className="fa-solid fa-caret-down"></i>
 export const play = <i className="fa-solid fa-play"></i>
 export const star = <i className="fa-solid fa-star"></i>
 export const starHalf = <i className="fa-solid fa-star-half"></i>
+export const xmark = <i className="fa-solid fa-xmark"></i>

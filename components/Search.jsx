@@ -1,18 +1,60 @@
+import { setSearchQuery } from '@/redux/slices/searchSlice';
 import themes from '@/styles/themes';
-import { search } from '@/utils/icons';
-import React from 'react';
-import { useSelector } from 'react-redux';
+import { search, xmark } from '@/utils/icons';
+import debounce from 'lodash.debounce';
+import React, { useCallback, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 const Search = () => {
+    const dispatch = useDispatch();
+    const { searchQuery } = useSelector((state) => state.search);
     const { theme } = useSelector((state) => state.theme);
     const currentTheme = themes[theme];
 
+    const [searchValue, setSearchValue] = useState('');
+    const inputRef = useRef(null);
+
+    const getSearchResult = async (query) => {
+        dispatch(setSearchQuery(query));
+    };
+
+    const handleSearch = useCallback(debounce(function (val) {
+        getSearchResult(val);
+    }, 2000), []);
+
+    const handleChangeInput = () => {
+        setSearchValue(inputRef.current?.value);
+        handleSearch(inputRef.current?.value);
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        handleSearch(searchValue);
+    }
+
+    const clearResult = () => {
+        setSearchValue('');
+        dispatch(setSearchQuery(''));
+    }
+
     return (
-        <SearchBlock theme={currentTheme}>
+        <SearchBlock theme={currentTheme} onSubmit={handleSubmit}>
             <div className="search">
-                <input type="text" placeholder='Search...' />
-                <button type='submit' className='search-button'>
+                <input
+                    type="text"
+                    placeholder='Search...'
+                    ref={inputRef}
+                    onChange={handleChangeInput}
+                    value={searchValue || searchQuery}
+                />
+                {
+                    searchQuery.length > 0 && <i
+                        className="fa-solid fa-xmark"
+                        onClick={clearResult}
+                    ></i>
+                }
+                <button type='submit' className='search-button' onClick={handleSubmit}>
                     {search}
                 </button>
             </div>
@@ -42,6 +84,14 @@ const SearchBlock = styled.form`
             &::placeholder {
                 font-weight: 500;
             }
+        }
+
+        i.fa-xmark {
+            position: absolute;
+            right: 50px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
         }
 
         .search-button {

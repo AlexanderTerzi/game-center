@@ -3,8 +3,8 @@ import Game from '@/components/Game';
 import Layout from '@/components/Layout';
 import Loader from '@/components/Loader';
 import MainContent from '@/components/MainContent';
-import { fetchPopularGames, setPerPage } from '@/redux/slices/popularGamesSlice';
 import { fetchSingleGame, setOpenModal } from '@/redux/slices/singleGameSlice';
+import { fetchUpcomingGames, setPerPage } from '@/redux/slices/upcomingGamesSlice';
 import themes from '@/styles/themes';
 import { down } from '@/utils/icons';
 import Head from 'next/head';
@@ -12,16 +12,16 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-const Popular = () => {
+const Upcoming = () => {
     const dispatch = useDispatch();
-    const { popularGames, perPage, status } = useSelector((state) => state.popularGames);
+    const { upcomingGames, perPage, status } = useSelector((state) => state.upcomingGames);
     const { theme } = useSelector((state) => state.theme);
     const { openModal } = useSelector((state) => state.singleGame);
     const currentTheme = themes[theme];
 
     useEffect(() => {
-        const PopularGamesData = (async () => {
-            dispatch(fetchPopularGames({ perPage }));
+        const UpcomingGamesData = (async () => {
+            dispatch(fetchUpcomingGames({ perPage }));
         })();
     }, [perPage]);
 
@@ -45,9 +45,9 @@ const Popular = () => {
             <Layout>
                 <MainContent>
                     {status === 'success' && (
-                        <PopularGamesBlock>
+                        <UpcomingGamesBlock>
                             {
-                                popularGames && popularGames.map((game) => (
+                                upcomingGames && upcomingGames.map((game) => (
                                     <Game
                                         key={game.id}
                                         values={{ ...game }}
@@ -58,7 +58,7 @@ const Popular = () => {
                                     />
                                 ))
                             }
-                        </PopularGamesBlock>
+                        </UpcomingGamesBlock>
                     )}
                     {
                         status === 'loading' && <Loader />
@@ -87,10 +87,10 @@ const Popular = () => {
     );
 };
 
-const PopularGamesBlock = styled.div`
+const UpcomingGamesBlock = styled.div`
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
     grid-gap: 2rem;
 `;
 
-export default Popular;
+export default Upcoming;

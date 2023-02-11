@@ -43,3 +43,16 @@ a {
   justify-content: center;
   padding: 2rem 0;
 }
+
+body::-webkit-scrollbar {
+  width: 7px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: linear-gradient(110.42deg, #CF57A3 29.2%, #4731B6 63.56%);
+  border-radius: 15px;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(11.42deg, #CF57A3 29.2%, #4731B6 63.56%);
+}
