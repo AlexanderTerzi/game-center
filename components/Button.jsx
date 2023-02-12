@@ -34,7 +34,7 @@ const ButtonEl = styled.button`
     display: flex;
     align-items: center;
     position: relative;
-    color: ${props => props.theme.colorWhite};
+    color: ${props => props.theme.colorWhite2};
     z-index: 5;
     overflow: hidden;
 

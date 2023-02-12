@@ -152,6 +152,10 @@ const GameModalBlock = styled.div`
             width: 0.5rem;
         }
 
+        .rating {
+            color: ${props => props.theme.colorWhite};
+        }
+
         .image {
             position: relative;
             height: 500px;
@@ -195,6 +199,7 @@ const GameModalBlock = styled.div`
         .description p{
             font-size: 15px;
             font-weight: 400;
+            color: ${props => props.theme.colorWhite};
         }
     }
     

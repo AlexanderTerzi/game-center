@@ -74,6 +74,7 @@ const SidebarBlock = styled.div`
         flex-direction: column;
         justify-content: space-between;
         height: 100%;
+        color: ${props => props.theme.colorWhite};
 
         .nav-item {
             padding: ${props => !props.menuOpened ? '0.6rem 2rem' : '0.79rem 2rem'} ;
@@ -134,6 +135,7 @@ const SidebarBlock = styled.div`
         border-top: 1px solid ${props => props.theme.borderColor};
         transition: all 0.3s ease;
         transform: ${props => !props.menuOpened ? 'translateX(0) ' : 'translateX(-200%)'};
+        color: ${props => props.theme.colorWhite};
 
         .links {
             display: flex;

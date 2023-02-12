@@ -42,6 +42,10 @@ const GameBlock = styled.div`
     cursor: pointer;
     transition: all 0.3s ease;
 
+    h2 {
+        color: ${props => props.theme.colorWhite};
+    }
+
     img {
         transition: all 0.3s ease;
     }

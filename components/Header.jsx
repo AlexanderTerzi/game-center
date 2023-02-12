@@ -1,17 +1,17 @@
 import React from 'react';
-import styled from 'styled-components';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
+import styled from 'styled-components';
 
 import { useDispatch, useSelector } from 'react-redux';
-import themes from '@/styles/themes';
+import { setMenuToggle } from '@/redux/slices/UISlice';
 
-import { bars, discord, moon } from '@/utils/icons';
-import logo from '../assets/logo.svg';
 import Search from './Search';
 import Button from './Button';
-import { setMenuToggle } from '@/redux/slices/UISlice';
-import { useRouter } from 'next/router';
-
+import themes from '@/styles/themes';
+import { bars, discord } from '@/utils/icons';
+import logo from '../assets/logo.svg';
+import ThemeToogler from './ThemeToogler';
 
 const Header = () => {
     const dispatch = useDispatch();
@@ -47,9 +47,7 @@ const Header = () => {
                         </div>
                     )
                 }
-                <button className='user-button'>
-                    {moon}
-                </button>
+                <ThemeToogler />
                 <Button
                     name={'Join'}
                     classes={'btn-login'}
@@ -103,7 +101,7 @@ const HeaderBlock = styled.header`
                     transition: all 0.3s ease;
 
                     &:hover {
-                        color: ${props => props.theme.colorIcons2};
+                        color: ${props => props.theme.colorIcons2}; 
                     }
                 }
             }
