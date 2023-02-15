@@ -1,8 +1,8 @@
 import React from 'react';
-import styled from 'styled-components';
 import Image from 'next/image';
+import styled from 'styled-components';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import themes from '@/styles/themes';
 import noimage from '../assets/noimage.jpg';

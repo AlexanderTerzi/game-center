@@ -1,22 +1,24 @@
+import React, { useEffect } from 'react';
+import Head from 'next/head';
+import styled from 'styled-components';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchPopularGames, setPerPage } from '@/redux/slices/popularGamesSlice';
+import { fetchSingleGame, setOpenModal } from '@/redux/slices/singleGameSlice';
+
 import Button from '@/components/Button';
 import Game from '@/components/Game';
 import Layout from '@/components/Layout';
 import Loader from '@/components/Loader';
 import MainContent from '@/components/MainContent';
-import { fetchPopularGames, setPerPage } from '@/redux/slices/popularGamesSlice';
-import { fetchSingleGame, setOpenModal } from '@/redux/slices/singleGameSlice';
-import themes from '@/styles/themes';
 import { down } from '@/utils/icons';
-import Head from 'next/head';
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import styled from 'styled-components';
+
+import themes from '@/styles/themes';
 
 const Popular = () => {
     const dispatch = useDispatch();
     const { popularGames, perPage, status } = useSelector((state) => state.popularGames);
     const { theme } = useSelector((state) => state.theme);
-    const { openModal } = useSelector((state) => state.singleGame);
     const currentTheme = themes[theme];
 
     useEffect(() => {
@@ -43,7 +45,7 @@ const Popular = () => {
                 <title>Popular |Game Center</title>
             </Head>
             <Layout>
-                <MainContent>
+                <MainContent pageTitle={'Popular'} keywords={'popular games, last games'}>
                     {status === 'success' && (
                         <PopularGamesBlock>
                             {

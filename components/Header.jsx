@@ -101,7 +101,7 @@ const HeaderBlock = styled.header`
                     transition: all 0.3s ease;
 
                     &:hover {
-                        color: ${props => props.theme.colorIcons2}; 
+                        color: ${props => props.theme.colorIcons2};
                     }
                 }
             }

@@ -1,10 +1,12 @@
-import { setSearchQuery } from '@/redux/slices/searchSlice';
-import themes from '@/styles/themes';
-import { search, xmark } from '@/utils/icons';
-import debounce from 'lodash.debounce';
 import React, { useCallback, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import debounce from 'lodash.debounce';
 import styled from 'styled-components';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { setSearchQuery } from '@/redux/slices/searchSlice';
+
+import themes from '@/styles/themes';
+import { search } from '@/utils/icons';
 
 const Search = () => {
     const dispatch = useDispatch();

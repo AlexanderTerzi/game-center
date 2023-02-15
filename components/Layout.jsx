@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+
 import GameModal from './GameModal';
 import Header from './Header';
 import Sidebar from './Sidebar';

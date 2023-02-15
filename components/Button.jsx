@@ -1,7 +1,8 @@
-import themes from '@/styles/themes';
 import React from 'react';
-import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+
+import themes from '@/styles/themes';
 
 const Button = (props) => {
     const { icon, name, background, classes, padding, borderRad, fontWeight, fontSize, click, type, blob } = props;

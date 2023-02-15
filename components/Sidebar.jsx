@@ -4,8 +4,8 @@ import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
 import { useSelector } from 'react-redux';
-import themes from '@/styles/themes';
 
+import themes from '@/styles/themes';
 import menu from '@/utils/menu';
 
 const Sidebar = () => {

@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
+import Image from 'next/image';
 
 import { useDispatch, useSelector } from 'react-redux';
-
-import themes from '@/styles/themes';
-import Image from 'next/image';
 import { setOpenModal } from '@/redux/slices/singleGameSlice';
+
 import Button from './Button';
 
+import themes from '@/styles/themes';
 import { play, star, starHalf } from '@/utils/icons';
 import playstation from '../assets/playstation.svg'
 import xbox from '../assets/xbox.svg'
@@ -77,7 +77,7 @@ const GameModal = () => {
                             {
                                 platforms && platforms.map((item) => {
                                     return (
-                                        <span key={item.id}>
+                                        <span key={item.platform.name}>
                                             {
                                                 platformItem(item.platform.name)
                                             }

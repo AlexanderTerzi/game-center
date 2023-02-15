@@ -44,7 +44,7 @@ export default function Home() {
   return (
     <>
       <Layout>
-        <MainContent>
+        <MainContent pageTitle={'Home'} keywords={'best games, online games, PC games'}>
           <HomePageBlock>
             {
               status === 'success' && (

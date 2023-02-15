@@ -1,22 +1,24 @@
+import React, { useEffect } from 'react';
+import Head from 'next/head';
+import styled from 'styled-components';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchSingleGame, setOpenModal } from '@/redux/slices/singleGameSlice';
+import { fetchUpcomingGames, setPerPage } from '@/redux/slices/upcomingGamesSlice';
+
 import Button from '@/components/Button';
 import Game from '@/components/Game';
 import Layout from '@/components/Layout';
 import Loader from '@/components/Loader';
 import MainContent from '@/components/MainContent';
-import { fetchSingleGame, setOpenModal } from '@/redux/slices/singleGameSlice';
-import { fetchUpcomingGames, setPerPage } from '@/redux/slices/upcomingGamesSlice';
-import themes from '@/styles/themes';
+
 import { down } from '@/utils/icons';
-import Head from 'next/head';
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import styled from 'styled-components';
+import themes from '@/styles/themes';
 
 const Upcoming = () => {
     const dispatch = useDispatch();
     const { upcomingGames, perPage, status } = useSelector((state) => state.upcomingGames);
     const { theme } = useSelector((state) => state.theme);
-    const { openModal } = useSelector((state) => state.singleGame);
     const currentTheme = themes[theme];
 
     useEffect(() => {
@@ -40,10 +42,10 @@ const Upcoming = () => {
     return (
         <>
             <Head>
-                <title>Popular |Game Center</title>
+                <title>Popular | Game Center</title>
             </Head>
             <Layout>
-                <MainContent>
+                <MainContent pageTitle={'Upcoming'} keywords={'upcoming games, new games'}>
                     {status === 'success' && (
                         <UpcomingGamesBlock>
                             {

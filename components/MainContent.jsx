@@ -1,16 +1,25 @@
+import Head from 'next/head';
 import styled from 'styled-components';
 
 import { useSelector } from 'react-redux';
 import themes from '@/styles/themes';
 
-
-const MainContent = ({ children }) => {
+const MainContent = ({ children, pageTitle, keywords }) => {
     const { theme } = useSelector((state) => state.theme);
     const { menuOpened } = useSelector((state) => state.UI);
     const currentTheme = themes[theme];
 
     return (
-        <MainContentBlock theme={currentTheme} menuOpened={menuOpened}>
+        <MainContentBlock
+            theme={currentTheme}
+            menuOpened={menuOpened}
+        >
+            <Head>
+                <title>{`${pageTitle || 'Game Center'} | Game Center`}</title>
+                <meta name="description" content="Game Center" />
+                <meta name="viewport" content="width=device-width, initial-scale=1" />
+                <meta keywords={`game center, game base, games ${keywords && keywords}`} />
+            </Head>
             {children}
         </MainContentBlock>
     );
