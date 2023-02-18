@@ -11,11 +11,12 @@ import Game from '@/components/Game';
 import Layout from '@/components/Layout';
 import Loader from '@/components/Loader';
 import MainContent from '@/components/MainContent';
+import ErrorBlock from '@/components/ErrorBlock';
 
 import { down } from '@/utils/icons';
 import themes from '@/styles/themes';
 
-const Upcoming = () => {
+const Upcoming = React.memo(() => {
     const dispatch = useDispatch();
     const { upcomingGames, perPage, status } = useSelector((state) => state.upcomingGames);
     const { theme } = useSelector((state) => state.theme);
@@ -65,9 +66,15 @@ const Upcoming = () => {
                     {
                         status === 'loading' && <Loader />
                     }
+                    {
+                        status == 'success' && upcomingGames.length === 0 && <ErrorBlock title='Nothing was found :(' reloadButton />
+                    }
+                    {
+                        status === 'error' && <ErrorBlock title='Network error' reloadButton />
+                    }
                     <div className="load-more">
                         {
-                            status === 'success' && (
+                            status === 'success' && upcomingGames.length !== 0 && (
                                 <Button
                                     name='Load more'
                                     blob='blob'
@@ -82,12 +89,11 @@ const Upcoming = () => {
                             )
                         }
                     </div>
-
                 </MainContent>
             </Layout>
         </>
     );
-};
+});
 
 const UpcomingGamesBlock = styled.div`
     display: grid;

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,16 +10,16 @@ import Layout from '@/components/Layout';
 import MainContent from '@/components/MainContent';
 import Button from '@/components/Button';
 import Loader from '@/components/Loader';
+import ErrorBlock from '@/components/ErrorBlock';
 
 import { down } from '@/utils/icons';
 import themes from '@/styles/themes';
 
-export default function Home() {
+const Home = React.memo(() => {
   const dispatch = useDispatch();
   const { games, perPage, status } = useSelector((state) => state.games);
   const { theme } = useSelector((state) => state.theme);
   const { searchQuery } = useSelector((state) => state.search);
-  const { openModal } = useSelector((state) => state.singleGame);
   const currentTheme = themes[theme];
 
   useEffect(() => {
@@ -67,10 +67,16 @@ export default function Home() {
             {
               status === 'loading' && <Loader />
             }
+            {
+              status == 'success' && games.length === 0 && <ErrorBlock title='Nothing was found :(' reloadButton />
+            }
+            {
+              status === 'error' && <ErrorBlock title='Network error' reloadButton />
+            }
           </HomePageBlock>
           <div className="load-more">
             {
-              status === 'success' && (
+              status === 'success' && games.length !== 0 && (
                 <Button
                   name='Load more'
                   blob='blob'
@@ -89,7 +95,7 @@ export default function Home() {
       </Layout>
     </>
   )
-};
+});
 
 const HomePageBlock = styled.div`
   .games-list {
@@ -102,3 +108,5 @@ const HomePageBlock = styled.div`
       }
   }
 `;
+
+export default Home;

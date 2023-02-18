@@ -9,7 +9,7 @@ import Layout from '@/components/Layout';
 import MainContent from '@/components/MainContent';
 import themes from '@/styles/themes';
 
-const NotFoundPage = () => {
+const NotFoundPage = React.memo(() => {
     const router = useRouter();
     const { theme } = useSelector(state => state.theme);
     const currentTheme = themes[theme];
@@ -42,7 +42,7 @@ const NotFoundPage = () => {
             </Layout>
         </>
     );
-};
+});
 
 const NotFoundBlock = styled.div`
     height: 80vh;

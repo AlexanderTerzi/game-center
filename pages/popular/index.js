@@ -15,7 +15,7 @@ import { down } from '@/utils/icons';
 
 import themes from '@/styles/themes';
 
-const Popular = () => {
+const Popular = React.memo(() => {
     const dispatch = useDispatch();
     const { popularGames, perPage, status } = useSelector((state) => state.popularGames);
     const { theme } = useSelector((state) => state.theme);
@@ -65,9 +65,15 @@ const Popular = () => {
                     {
                         status === 'loading' && <Loader />
                     }
+                    {
+                        status == 'success' && popularGames.length === 0 && <ErrorBlock title='Nothing was found :(' reloadButton />
+                    }
+                    {
+                        status === 'error' && <ErrorBlock title='Network error' reloadButton />
+                    }
                     <div className="load-more">
                         {
-                            status === 'success' && (
+                            status === 'success' && popularGames.length !== 0 && (
                                 <Button
                                     name='Load more'
                                     blob='blob'
@@ -87,7 +93,7 @@ const Popular = () => {
             </Layout>
         </>
     );
-};
+});
 
 const PopularGamesBlock = styled.div`
     display: grid;
