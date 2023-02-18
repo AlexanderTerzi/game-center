@@ -61,10 +61,18 @@ const GameBlock = styled.div`
         position: relative;
         overflow: hidden;
         border-radius: ${props => props.theme.borderRadiusSm};
+
+        @media screen and (max-width: 870px){
+            height: 320px;
+        }
     }
 
     .title {
         padding: 2rem;
+
+        @media screen and (max-width: 860px){
+           font-size: 16px;
+        }
     }
 `;
 

@@ -68,6 +68,19 @@ const SidebarBlock = styled.div`
     justify-content: space-between;
     transition: all 0.3s ease;
 
+    @media screen and (max-width: 870px){
+        height: 100vh;
+    };
+
+    @media screen and (max-width: 680px){
+        position: absolute;
+        top: 4rem;
+        width: 100%;
+        left: 0;
+        transform: ${props => !props.menuOpened ? 'translateX(0)' : 'translateX(-110%)'};
+        z-index: 3;
+    }
+
     .nav {
         margin: 1rem 0rem;
         display: flex;
@@ -136,6 +149,15 @@ const SidebarBlock = styled.div`
         transition: all 0.3s ease;
         transform: ${props => !props.menuOpened ? 'translateX(0) ' : 'translateX(-200%)'};
         color: ${props => props.theme.colorWhite};
+
+        @media screen and (max-width: 870px){
+            position: absolute;
+            bottom: 4rem;
+        }
+
+        @media screen and (max-width: 680px){
+            width: 100%;
+        }
 
         .links {
             display: flex;

@@ -32,6 +32,18 @@ const MainContentBlock = styled.main`
     padding: 2rem 1.5rem;
     margin-left: ${props => props.menuOpened ? props.theme.sidebarCollapsed : props.theme.sidebarWidth};
     transition: all 0.3s ease;
+
+    @media screen and (max-width: 870px){
+        margin-top: 7.5rem;
+    }
+
+    @media screen and (max-width: 680px){
+        margin-left: 0;
+    }
+
+    @media screen and (max-width: 440px){
+        margin-top: 10rem;
+    }
 `;
 
 export default MainContent;

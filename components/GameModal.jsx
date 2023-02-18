@@ -8,7 +8,7 @@ import { setOpenModal } from '@/redux/slices/singleGameSlice';
 import Button from './Button';
 
 import themes from '@/styles/themes';
-import { play, star, starHalf } from '@/utils/icons';
+import { play, star, starHalf, xmark } from '@/utils/icons';
 import playstation from '../assets/playstation.svg'
 import xbox from '../assets/xbox.svg'
 import nitendo from '../assets/nitendo.svg'
@@ -16,13 +16,11 @@ import steam from '../assets/steam.svg'
 import apple from '../assets/apple.svg'
 import windows from '../assets/windows.svg'
 import android from '../assets/android.svg'
-import gamepad from '../assets/gamepad.svg'
 
 const GameModal = () => {
     const dispatch = useDispatch();
     const { theme } = useSelector((state) => state.theme);
-    const { name, platforms, rating, genres, background_image, website, reddit_url, description_raw, background_image_additional } = useSelector((state) => state.singleGame.game);
-    const { status } = useSelector((state) => state.singleGame);
+    const { name, platforms, rating, genres, website, description_raw, background_image_additional } = useSelector((state) => state.singleGame.game);
     const currentTheme = themes[theme];
 
     const ratingStars = Array.from({ length: 5 }, (_, i) => {
@@ -57,6 +55,8 @@ const GameModal = () => {
         }
     }
 
+    const closeModal = () => dispatch(setOpenModal());
+
     return (
         <GameModalBlock theme={currentTheme}>
             <div className="modal-content">
@@ -87,6 +87,9 @@ const GameModal = () => {
                             }
                         </div>
                     </div>
+                    <button className='close-modal' onClick={closeModal}>
+                        {xmark}
+                    </button>
                 </div>
                 <div className="image">
                     {background_image_additional && name && <Image
@@ -122,7 +125,7 @@ const GameModal = () => {
                     </p>
                 </div>
             </div>
-            <div className="modal-overlay" onClick={() => dispatch(setOpenModal())} />
+            <div className="modal-overlay" onClick={closeModal} />
         </GameModalBlock>
     );
 };
@@ -148,12 +151,28 @@ const GameModalBlock = styled.div`
         z-index: 15;
         overflow-y: scroll;
 
+        @media screen and (max-width: 1100px){
+            width: 90%;
+        }
+
         &::-webkit-scrollbar {
             width: 0.5rem;
         }
 
         .rating {
             color: ${props => props.theme.colorWhite};
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            cursor: pointer;
+            padding: 0.3rem;
+
+            i {
+                color: ${props => props.theme.colorWhite};
+            }
         }
 
         .image {
@@ -178,6 +197,10 @@ const GameModalBlock = styled.div`
                     }
                 }
             }
+
+            @media screen and (max-width: 700px){
+                height: 300px;
+            }
         }
 
         .genres {
@@ -193,10 +216,14 @@ const GameModalBlock = styled.div`
                 &:hover {
                     box-shadow: ${props => props.theme.shadow5};
                 }
+
+                @media screen and (max-width: 500px){
+                    margin-bottom: 0.5rem;
+                }
             }
         }
 
-        .description p{
+        .description p {
             font-size: 15px;
             font-weight: 400;
             color: ${props => props.theme.colorWhite};
@@ -215,6 +242,10 @@ const GameModalBlock = styled.div`
     .top {
         display: flex;
         justify-content: space-between;
+
+        @media screen and (max-width: 600px){
+            flex-direction: column;
+        }
 
         .name {
             display: flex;
@@ -239,6 +270,9 @@ const GameModalBlock = styled.div`
                 -webkit-text-fill-color: transparent;
                 color: transparent;
 
+                @media screen and (max-width: 700px){
+                    font-size: 1.5rem;
+                }
             }
         }
 
@@ -247,17 +281,37 @@ const GameModalBlock = styled.div`
                 font-size: 24px;
                 text-align: right;
                 color: ${props => props.theme.colorGrey0};
+
+                @media screen and (max-width: 700px){
+                    font-size: 1.2rem;
+                }
+
+                @media screen and (max-width: 600px){
+                    text-align: center;
+                    margin-top: 0.7rem;
+                }
             }
 
             .icons {
                 display: flex;
                 align-items: center;
+
+                @media screen and (max-width: 600px){
+                    justify-content: center;
+                }
+
                 img{
                     margin-top: 1rem;
-                    margin-right: 1rem;
+                    margin-left: 1rem;
+
+                    @media screen and (max-width: 700px){
+                        height: 20px;
+                        width: 20px;
+                    }
                 }
             }
         }
+
     }
 `;
 

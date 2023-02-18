@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
@@ -20,6 +20,12 @@ const Header = () => {
     const { menuOpened } = useSelector(state => state.UI);
     const currentTheme = themes[theme];
 
+    useEffect(() => {
+        if (window.innerWidth <= '680') {
+            dispatch(setMenuToggle(!menuOpened))
+        }
+    }, [])
+
     const handleClickMenu = () => {
         dispatch(setMenuToggle(!menuOpened));
     };
@@ -40,25 +46,23 @@ const Header = () => {
                 </div>
             </div>
             <div className="user">
-                {
-                    pathname === '/' && (
-                        <div className="user-form">
-                            <Search />
-                        </div>
-                    )
-                }
-                <ThemeToogler />
-                <Button
-                    name={'Join'}
-                    classes={'btn-login'}
-                    padding={'0.6rem 2rem'}
-                    borderRad={'0.8rem'}
-                    fontWeight={'bold'}
-                    fontSize={'1.2rem'}
-                    background={currentTheme.colorPrimary2}
-                    blob={'blob'}
-                    icon={discord}
-                />
+                <div className="user-form">
+                    <Search />
+                </div>
+                <div className='user-options'>
+                    <ThemeToogler />
+                    <Button
+                        name={'Join'}
+                        classes={'btn-login'}
+                        padding={'0.6rem 2rem'}
+                        borderRad={'0.8rem'}
+                        fontWeight={'bold'}
+                        fontSize={'1.2rem'}
+                        background={currentTheme.colorPrimary2}
+                        blob={'blob'}
+                        icon={discord}
+                    />
+                </div>
             </div>
         </HeaderBlock>
     );
@@ -122,12 +126,59 @@ const HeaderBlock = styled.header`
         display: flex;
         align-items: center;
 
+        .user-options {
+            display: flex;
+
+            @media screen and (max-width: 870px){
+                margin-left: auto;
+            }
+
+            @media screen and (max-width: 680px){
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+            }
+
+            @media screen and (max-width: 440px){
+                position: static;
+                margin-left: 0;
+            }
+        }
+
         .user-button {
             margin: ${props => props.theme.marLRSm};
         }
 
         i {
             transition: all 0.3s ease;
+        }
+
+        @media screen and (max-width: 870px){
+            flex-direction: column;
+            .user-form {
+                order: 2;
+                margin-top: 1rem;
+            }
+        }
+
+        @media screen and (max-width: 440px){
+            .user-form {
+                order: 0;
+                margin-bottom: 0.5rem;
+            }
+        }
+    }
+
+    @media screen and (max-width: 870px){
+        height: auto;
+        padding: 0.8rem 2rem;
+    }
+
+    @media screen and (max-width: 680px){
+        display: block;
+
+        .user-form input{
+            width: 90vw;
         }
     }
 `;
