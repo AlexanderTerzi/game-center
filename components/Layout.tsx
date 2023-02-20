@@ -1,12 +1,17 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { selectSingleGame } from '../redux/slices/singleGameSlice';
 
 import GameModal from './GameModal';
 import Header from './Header';
 import Sidebar from './Sidebar';
 
-const Layout = ({ children }) => {
-    const { openModal } = useSelector((state) => state.singleGame);
+interface ILayoutProps {
+    children: React.ReactNode;
+}
+
+const Layout: React.FC<ILayoutProps> = ({ children }) => {
+    const { openModal } = useSelector(selectSingleGame);
 
     return (
         <>

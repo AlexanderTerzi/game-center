@@ -3,12 +3,21 @@ import Image from 'next/image';
 import styled from 'styled-components';
 
 import { useSelector } from 'react-redux';
+import { selectTheme } from '../redux/slices/themeSlice';
 
-import themes from '@/styles/themes';
+import themes from '../styles/themes';
 import noimage from '../assets/noimage.jpg';
 
-const Game = ({ values, click }) => {
-    const { theme } = useSelector((state) => state.theme);
+interface IGameProps {
+    values: {
+        name: string;
+        background_image: string;
+    },
+    click: () => void;
+}
+
+const Game: React.FC<IGameProps> = ({ values, click }) => {
+    const { theme } = useSelector(selectTheme);
     const currentTheme = themes[theme];
 
     const { name, background_image } = values;
@@ -19,7 +28,7 @@ const Game = ({ values, click }) => {
                 <Image
                     src={!background_image ? noimage : background_image}
                     alt={name}
-                    style={{ objectFit: "cover", borderRadius: theme.borderRadiusSm }}
+                    style={{ objectFit: "cover", borderRadius: currentTheme.borderRadiusSm }}
                     sizes='100%'
                     priority
                     fill

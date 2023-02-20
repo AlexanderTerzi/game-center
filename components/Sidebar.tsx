@@ -4,18 +4,20 @@ import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
 import { useSelector } from 'react-redux';
+import { selectTheme } from '../redux/slices/themeSlice';
+import { selectUIMenu } from '../redux/slices/UISlice';
 
-import themes from '@/styles/themes';
-import menu from '@/utils/menu';
+import themes from '../styles/themes';
+import menu from '../utils/menu';
 
-const Sidebar = () => {
-    const { theme } = useSelector((state) => state.theme);
-    const { menuOpened } = useSelector(state => state.UI);
+const Sidebar: React.FC = () => {
+    const { theme } = useSelector(selectTheme);
+    const { menuOpened } = useSelector(selectUIMenu);
     const currentTheme = themes[theme];
 
     const router = useRouter();
 
-    const handleClickLink = (url) => {
+    const handleClickLink = (url: string) => {
         router.push(url);
     };
 
@@ -58,7 +60,7 @@ const Sidebar = () => {
     );
 };
 
-const SidebarBlock = styled.div`
+const SidebarBlock = styled('div') <{ menuOpened: boolean }>`
     width: ${props => !props.menuOpened ? props.theme.sidebarWidth : props.theme.sidebarCollapsed};
     background-color: ${props => props.theme.colorBg2};
     position: fixed;

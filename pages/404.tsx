@@ -3,15 +3,16 @@ import { useRouter } from 'next/router'
 import styled from 'styled-components';
 
 import { useSelector } from 'react-redux';
+import { selectTheme } from '../redux/slices/themeSlice';
 
-import Button from '@/components/Button';
-import Layout from '@/components/Layout';
-import MainContent from '@/components/MainContent';
-import themes from '@/styles/themes';
+import Button from '../components/Button';
+import Layout from '../components/Layout';
+import MainContent from '../components/MainContent';
+import themes from '../styles/themes';
 
 const NotFoundPage = React.memo(() => {
     const router = useRouter();
-    const { theme } = useSelector(state => state.theme);
+    const { theme } = useSelector(selectTheme);
     const currentTheme = themes[theme];
 
     const goToMainPage = () => {

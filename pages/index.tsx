@@ -2,24 +2,33 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchGames, setPerPage } from '@/redux/slices/gamesSlice';
-import { fetchSingleGame, setOpenModal } from '@/redux/slices/singleGameSlice';
+import { useAppDispatch } from '../redux/store';
+import { fetchGames, selectGames, setPerPage } from '../redux/slices/gamesSlice';
+import { fetchSingleGame, setOpenModal } from '../redux/slices/singleGameSlice';
+import { selectTheme } from '../redux/slices/themeSlice';
+import { selectSearch } from '../redux/slices/searchSlice';
 
-import Game from '@/components/Game';
-import Layout from '@/components/Layout';
-import MainContent from '@/components/MainContent';
-import Button from '@/components/Button';
-import Loader from '@/components/Loader';
-import ErrorBlock from '@/components/ErrorBlock';
+import Game from '../components/Game';
+import Layout from '../components/Layout';
+import MainContent from '../components/MainContent';
+import Button from '../components/Button';
+import Loader from '../components/Loader';
+import ErrorBlock from '../components/ErrorBlock';
 
-import { down } from '@/utils/icons';
-import themes from '@/styles/themes';
+import { down } from '../utils/icons';
+import themes from '../styles/themes';
+
+export type gameType = {
+  id: number;
+  name: string;
+  background_image: string;
+}
 
 const Home = React.memo(() => {
-  const dispatch = useDispatch();
-  const { games, perPage, status } = useSelector((state) => state.games);
-  const { theme } = useSelector((state) => state.theme);
-  const { searchQuery } = useSelector((state) => state.search);
+  const dispatch = useAppDispatch();
+  const { games, perPage, status } = useSelector(selectGames);
+  const { theme } = useSelector(selectTheme);
+  const { searchQuery } = useSelector(selectSearch);
   const currentTheme = themes[theme];
 
   useEffect(() => {
@@ -30,14 +39,14 @@ const Home = React.memo(() => {
   }, [perPage, searchQuery]);
 
   const handleCLickPerPage = () => {
-    dispatch(setPerPage(perPage + 6));
+    dispatch(setPerPage(Number(perPage) + 6));
   };
 
-  const fetchGame = async (id) => {
+  const fetchGame = async (id: number) => {
     dispatch(fetchSingleGame({ id }));
   };
 
-  const handleModal = (id) => {
+  const handleModal = (id: number) => {
     dispatch(setOpenModal(id))
   }
 
@@ -50,7 +59,7 @@ const Home = React.memo(() => {
               status === 'success' && (
                 <div className="games-list">
                   {
-                    games && games.map((game) => (
+                    games && games.map((game: gameType) => (
                       <Game
                         key={game.id}
                         values={{ ...game }}

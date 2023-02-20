@@ -2,22 +2,24 @@ import React, { useCallback, useRef, useState } from 'react';
 import debounce from 'lodash.debounce';
 import styled from 'styled-components';
 
-import { useDispatch, useSelector } from 'react-redux';
-import { setSearchQuery } from '@/redux/slices/searchSlice';
+import { useSelector } from 'react-redux';
+import { useAppDispatch } from '../redux/store'
+import { selectSearch, setSearchQuery } from '../redux/slices/searchSlice';
+import { selectTheme } from '../redux/slices/themeSlice';
 
-import themes from '@/styles/themes';
-import { search } from '@/utils/icons';
+import themes from '../styles/themes';
+import { search } from '../utils/icons';;
 
-const Search = () => {
-    const dispatch = useDispatch();
-    const { searchQuery } = useSelector((state) => state.search);
-    const { theme } = useSelector((state) => state.theme);
+const Search: React.FC = () => {
+    const dispatch = useAppDispatch();
+    const { searchQuery } = useSelector(selectSearch);
+    const { theme } = useSelector(selectTheme);
     const currentTheme = themes[theme];
 
     const [searchValue, setSearchValue] = useState('');
-    const inputRef = useRef(null);
+    const inputRef = useRef<HTMLInputElement>(null);
 
-    const getSearchResult = async (query) => {
+    const getSearchResult = async (query: string) => {
         dispatch(setSearchQuery(query));
     };
 
@@ -26,11 +28,13 @@ const Search = () => {
     }, 2000), []);
 
     const handleChangeInput = () => {
-        setSearchValue(inputRef.current?.value);
-        handleSearch(inputRef.current?.value);
+        if (inputRef.current) {
+            setSearchValue(inputRef.current?.value);
+            handleSearch(inputRef.current?.value);
+        }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: any) => {
         e.preventDefault();
         handleSearch(searchValue);
     }

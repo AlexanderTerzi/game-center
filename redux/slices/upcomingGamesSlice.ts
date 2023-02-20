@@ -1,12 +1,24 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from 'axios';
 
-import { API_URL } from "@/utils/API_URL";
+import { API_URL } from "../../utils/API_URL";
 import { API_KEY } from "../../config";
+import { Status } from "../enumStatus";
+import { RootState } from "../store";
+
+type fetchUpcomingGamesType = {
+    perPage: number | undefined;
+}
+
+interface IUpcomingGamesSliceState {
+    upcomingGames?: any;
+    perPage?: number;
+    status: Status;
+}
 
 export const fetchUpcomingGames = createAsyncThunk(
     'upcomingGames/fetchUpcomingGames',
-    async (params, thunkAPI) => {
+    async (params: fetchUpcomingGamesType, thunkAPI) => {
         const { perPage } = params;
 
         const res = await axios.get(
@@ -17,35 +29,37 @@ export const fetchUpcomingGames = createAsyncThunk(
     }
 )
 
-const initialState = {
+const initialState: IUpcomingGamesSliceState = {
     upcomingGames: [],
     perPage: 9,
-    status: 'loading', //  loading || success || error
+    status: Status.LOADING,
 };
 
 const upcomingGamesSlice = createSlice({
     name: 'upcomingGames',
     initialState,
     reducers: {
-        setPerPage(state, action) {
+        setPerPage(state, action: PayloadAction<number>) {
             state.perPage = action.payload;
         },
     },
     extraReducers: (builder) => {
         builder.addCase(fetchUpcomingGames.pending, (state) => {
-            state.status = 'loading';
+            state.status = Status.LOADING;
             state.upcomingGames = [];
         });
         builder.addCase(fetchUpcomingGames.fulfilled, (state, action) => {
             state.upcomingGames = action.payload.results;
-            state.status = 'success';
+            state.status = Status.SUCCESS;
         });
         builder.addCase(fetchUpcomingGames.rejected, (state) => {
-            state.status = 'error';
+            state.status = Status.ERROR;
             state.upcomingGames = [];
         });
     }
 });
+
+export const selectUpcomingGames = ((state: RootState) => state.upcomingGames);
 
 export const { setPerPage } = upcomingGamesSlice.actions;
 export default upcomingGamesSlice.reducer;

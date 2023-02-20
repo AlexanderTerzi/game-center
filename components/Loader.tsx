@@ -2,10 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { useSelector } from 'react-redux';
-import themes from '@/styles/themes';
+import { selectTheme } from '../redux/slices/themeSlice';
 
-const Loader = () => {
-    const { theme } = useSelector((state) => state.theme);
+import themes from '../styles/themes';
+
+const Loader: React.FC = () => {
+    const { theme } = useSelector(selectTheme);
     const currentTheme = themes[theme];
 
     return (

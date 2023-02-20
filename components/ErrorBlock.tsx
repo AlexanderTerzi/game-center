@@ -1,11 +1,20 @@
-import themes from '@/styles/themes';
 import React from 'react';
-import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+
+import { useSelector } from 'react-redux';
+import { selectTheme } from '../redux/slices/themeSlice';
+
+import themes from '../styles/themes';
 import Button from './Button';
 
-const ErrorBlock = ({ title, reloadButton }) => {
-    const { theme } = useSelector((state) => state.theme);
+interface IErrorBlockProps {
+    title: string;
+    reloadButton?: boolean;
+}
+
+
+const ErrorBlock: React.FC<IErrorBlockProps> = ({ title, reloadButton }) => {
+    const { theme } = useSelector(selectTheme);
     const currentTheme = themes[theme];
 
     const refreshPage = () => {

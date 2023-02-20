@@ -2,25 +2,38 @@ import React from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
 
-import { useDispatch, useSelector } from 'react-redux';
-import { setOpenModal } from '@/redux/slices/singleGameSlice';
+import { useSelector } from 'react-redux';
+import { useAppDispatch } from '../redux/store';
+import { selectTheme } from '../redux/slices/themeSlice';
+import { selectSingleGame, setOpenModal } from '../redux/slices/singleGameSlice';
 
 import Button from './Button';
 
-import themes from '@/styles/themes';
-import { play, star, starHalf, xmark } from '@/utils/icons';
-import playstation from '../assets/playstation.svg'
-import xbox from '../assets/xbox.svg'
-import nitendo from '../assets/nitendo.svg'
-import steam from '../assets/steam.svg'
-import apple from '../assets/apple.svg'
-import windows from '../assets/windows.svg'
-import android from '../assets/android.svg'
+import themes from '../styles/themes';
+import { play, star, starHalf, xmark } from '../utils/icons';
+import playstation from '../assets/playstation.svg';
+import xbox from '../assets/xbox.svg';
+import nitendo from '../assets/nitendo.svg';
+import steam from '../assets/steam.svg';
+import apple from '../assets/apple.svg';
+import windows from '../assets/windows.svg';
+import android from '../assets/android.svg';
 
-const GameModal = () => {
-    const dispatch = useDispatch();
-    const { theme } = useSelector((state) => state.theme);
-    const { name, platforms, rating, genres, website, description_raw, background_image_additional } = useSelector((state) => state.singleGame.game);
+type platformType = {
+    platform: {
+        name: string;
+    }
+}
+
+type genreType = {
+    name: string;
+    id: string | number;
+}
+
+const GameModal: React.FC = () => {
+    const dispatch = useAppDispatch();
+    const { theme } = useSelector(selectTheme);
+    const { name, platforms, rating, genres, website, description_raw, background_image_additional } = useSelector(selectSingleGame).game;
     const currentTheme = themes[theme];
 
     const ratingStars = Array.from({ length: 5 }, (_, i) => {
@@ -34,7 +47,7 @@ const GameModal = () => {
         )
     });
 
-    const platformItem = (item) => {
+    const platformItem = (item: string) => {
         switch (item) {
             case 'PlayStation 4' || 'PlayStation 3' || 'PlayStation 2' || 'PlayStation 5' || 'PlayStation':
                 return <Image src={playstation} alt="PlayStation 4" width={28} height={28} />
@@ -53,9 +66,9 @@ const GameModal = () => {
             default:
                 return ''
         }
-    }
+    };
 
-    const closeModal = () => dispatch(setOpenModal());
+    const closeModal = () => dispatch(setOpenModal(null));
 
     return (
         <GameModalBlock theme={currentTheme}>
@@ -75,7 +88,7 @@ const GameModal = () => {
                         <h2>Platforms</h2>
                         <div className="icons">
                             {
-                                platforms && platforms.map((item) => {
+                                platforms && platforms.map((item: platformType) => {
                                     return (
                                         <span key={item.platform.name}>
                                             {
@@ -95,7 +108,7 @@ const GameModal = () => {
                     {background_image_additional && name && <Image
                         src={background_image_additional}
                         alt={name}
-                        style={{ objectFit: "cover", borderRadius: theme.borderRadiusSm }}
+                        style={{ objectFit: "cover", borderRadius: currentTheme.borderRadiusSm }}
                         sizes='100%'
                         priority
                         fill
@@ -108,7 +121,7 @@ const GameModal = () => {
                 </div>
                 <div className="genres">
                     {
-                        genres && genres.map((genre) => (
+                        genres && genres.map((genre: genreType) => (
                             <Button
                                 name={genre.name}
                                 key={genre.id}

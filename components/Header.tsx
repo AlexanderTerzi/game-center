@@ -3,25 +3,26 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
-import { useDispatch, useSelector } from 'react-redux';
-import { setMenuToggle } from '@/redux/slices/UISlice';
+import { useSelector } from 'react-redux';
+import { useAppDispatch } from '../redux/store';
+import { selectUIMenu, setMenuToggle } from '../redux/slices/UISlice';
+import { selectTheme } from '../redux/slices/themeSlice';
 
 import Search from './Search';
 import Button from './Button';
-import themes from '@/styles/themes';
-import { bars, discord } from '@/utils/icons';
+import themes from '../styles/themes';
+import { bars, discord } from '../utils/icons';
 import logo from '../assets/logo.svg';
 import ThemeToogler from './ThemeToogler';
 
-const Header = () => {
-    const dispatch = useDispatch();
-    const { pathname } = useRouter();
-    const { theme } = useSelector(state => state.theme);
-    const { menuOpened } = useSelector(state => state.UI);
+const Header: React.FC = () => {
+    const dispatch = useAppDispatch();
+    const { theme } = useSelector(selectTheme);
+    const { menuOpened } = useSelector(selectUIMenu);
     const currentTheme = themes[theme];
 
     useEffect(() => {
-        if (window.innerWidth <= '680') {
+        if (window.innerWidth <= 680) {
             dispatch(setMenuToggle(!menuOpened))
         }
     }, [])

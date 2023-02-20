@@ -1,12 +1,24 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from 'axios';
 
-import { API_URL } from "@/utils/API_URL";
+import { API_URL } from "../../utils/API_URL";
 import { API_KEY } from "../../config";
+import { Status } from "../enumStatus";
+import { RootState } from "../store";
+
+type fetchPopularGamesType = {
+    perPage: number | undefined;
+}
+
+interface IPopularGamesSliceState {
+    popularGames?: any;
+    perPage?: number;
+    status: Status;
+}
 
 export const fetchPopularGames = createAsyncThunk(
     'popularGames/fetchPopularGames',
-    async (params, thunkAPI) => {
+    async (params: fetchPopularGamesType, thunkAPI) => {
         const { perPage } = params;
 
         const res = await axios.get(
@@ -17,35 +29,37 @@ export const fetchPopularGames = createAsyncThunk(
     }
 )
 
-const initialState = {
+const initialState: IPopularGamesSliceState = {
     popularGames: [],
     perPage: 9,
-    status: 'loading', //  loading || success || error
+    status: Status.LOADING, //  loading || success || error
 };
 
 const popularGamesSlice = createSlice({
     name: 'popularGames',
     initialState,
     reducers: {
-        setPerPage(state, action) {
+        setPerPage(state, action: PayloadAction<number>) {
             state.perPage = action.payload;
         },
     },
     extraReducers: (builder) => {
         builder.addCase(fetchPopularGames.pending, (state) => {
-            state.status = 'loading';
+            state.status = Status.LOADING;
             state.popularGames = [];
         });
         builder.addCase(fetchPopularGames.fulfilled, (state, action) => {
             state.popularGames = action.payload.results;
-            state.status = 'success';
+            state.status = Status.SUCCESS;
         });
         builder.addCase(fetchPopularGames.rejected, (state) => {
-            state.status = 'error';
+            state.status = Status.ERROR;
             state.popularGames = [];
         });
     }
 });
+
+export const selectPopularGames = ((state: RootState) => state.popularGames);
 
 export const { setPerPage } = popularGamesSlice.actions;
 export default popularGamesSlice.reducer;

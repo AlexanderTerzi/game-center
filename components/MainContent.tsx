@@ -2,11 +2,20 @@ import Head from 'next/head';
 import styled from 'styled-components';
 
 import { useSelector } from 'react-redux';
-import themes from '@/styles/themes';
+import { selectUIMenu } from '../redux/slices/UISlice';
+import { selectTheme } from '../redux/slices/themeSlice';
 
-const MainContent = ({ children, pageTitle, keywords }) => {
-    const { theme } = useSelector((state) => state.theme);
-    const { menuOpened } = useSelector((state) => state.UI);
+import themes from '../styles/themes';
+
+interface IMainContentProps {
+    children?: React.ReactNode;
+    pageTitle?: string;
+    keywords?: string;
+}
+
+const MainContent: React.FC<IMainContentProps> = ({ children, pageTitle, keywords }) => {
+    const { theme } = useSelector(selectTheme);
+    const { menuOpened } = useSelector(selectUIMenu);
     const currentTheme = themes[theme];
 
     return (
@@ -18,14 +27,14 @@ const MainContent = ({ children, pageTitle, keywords }) => {
                 <title>{`${pageTitle || 'Game Center'} | Game Center`}</title>
                 <meta name="description" content="Game Center" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <meta keywords={`game center, game base, games ${keywords && keywords}`} />
+                <meta name='keywords' content={`game center, game base, games, ${keywords && keywords}`} />
             </Head>
             {children}
         </MainContentBlock>
     );
 };
 
-const MainContentBlock = styled.main`
+const MainContentBlock = styled('main') <{ menuOpened: boolean }>`
     min-height: 100vh;
     background-color: ${props => props.theme.colorBg3};
     margin-top: 8vh;

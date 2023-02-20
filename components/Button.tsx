@@ -1,13 +1,29 @@
 import React from 'react';
 import styled from 'styled-components';
+
 import { useSelector } from 'react-redux';
+import { selectTheme } from '../redux/slices/themeSlice';
 
-import themes from '@/styles/themes';
+import themes from '../styles/themes';
 
-const Button = (props) => {
+interface IButtonProps {
+    name?: string;
+    background?: any;
+    classes?: string;
+    padding?: string;
+    borderRad?: string;
+    fontWeight?: string;
+    fontSize?: string;
+    icon?: React.ReactNode;
+    click?: () => void;
+    type?: "button" | "submit" | "reset" | undefined;
+    blob?: string;
+}
+
+const Button: React.FC<IButtonProps> = (props) => {
     const { icon, name, background, classes, padding, borderRad, fontWeight, fontSize, click, type, blob } = props;
 
-    const { theme } = useSelector((state) => state.theme);
+    const { theme } = useSelector(selectTheme);
     const currentTheme = themes[theme];
 
     return (

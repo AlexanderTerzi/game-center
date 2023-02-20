@@ -1,13 +1,14 @@
 import React from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
-import { setTheme } from '@/redux/slices/themeSlice';
+import { useSelector } from 'react-redux';
+import { selectTheme, setTheme } from '../redux/slices/themeSlice';
+import { useAppDispatch } from '../redux/store';
 
-import { moon, sun } from '@/utils/icons';
+import { moon, sun } from '../utils/icons';
 
-const ThemeToogler = () => {
-    const dispatch = useDispatch();
-    const { theme } = useSelector((state) => state.theme);
+const ThemeToogler: React.FC = () => {
+    const dispatch = useAppDispatch();
+    const { theme } = useSelector(selectTheme);
 
     const handleClickTheme = () => {
         const newTheme = theme === 0 ? 1 : 0;

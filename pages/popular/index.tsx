@@ -3,54 +3,57 @@ import Head from 'next/head';
 import styled from 'styled-components';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchSingleGame, setOpenModal } from '@/redux/slices/singleGameSlice';
-import { fetchUpcomingGames, setPerPage } from '@/redux/slices/upcomingGamesSlice';
+import { selectTheme } from '../../redux/slices/themeSlice';
+import { useAppDispatch } from '../../redux/store';
+import { fetchPopularGames, selectPopularGames, setPerPage } from '../../redux/slices/popularGamesSlice';
+import { fetchSingleGame, setOpenModal } from '../../redux/slices/singleGameSlice';
 
-import Button from '@/components/Button';
-import Game from '@/components/Game';
-import Layout from '@/components/Layout';
-import Loader from '@/components/Loader';
-import MainContent from '@/components/MainContent';
-import ErrorBlock from '@/components/ErrorBlock';
+import Button from '../../components/Button';
+import Game from '../../components/Game';
+import Layout from '../../components/Layout';
+import Loader from '../../components/Loader';
+import MainContent from '../../components/MainContent';
+import { down } from '../../utils/icons';
 
-import { down } from '@/utils/icons';
-import themes from '@/styles/themes';
+import themes from '../../styles/themes';
+import { gameType } from '..';
+import ErrorBlock from '../../components/ErrorBlock';
 
-const Upcoming = React.memo(() => {
-    const dispatch = useDispatch();
-    const { upcomingGames, perPage, status } = useSelector((state) => state.upcomingGames);
-    const { theme } = useSelector((state) => state.theme);
+const Popular = React.memo(() => {
+    const dispatch = useAppDispatch();
+    const { popularGames, perPage, status } = useSelector(selectPopularGames);
+    const { theme } = useSelector(selectTheme);
     const currentTheme = themes[theme];
 
     useEffect(() => {
-        const UpcomingGamesData = (async () => {
-            dispatch(fetchUpcomingGames({ perPage }));
+        const PopularGamesData = (async () => {
+            dispatch(fetchPopularGames({ perPage }));
         })();
     }, [perPage]);
 
-    const fetchGame = async (id) => {
+    const fetchGame = async (id: any) => {
         dispatch(fetchSingleGame({ id }));
     };
 
-    const handleModal = (id) => {
+    const handleModal = (id: any) => {
         dispatch(setOpenModal(id))
     };
 
     const handleCLickPerPage = () => {
-        dispatch(setPerPage(perPage + 6));
+        dispatch(setPerPage(Number(perPage) + 6));
     };
 
     return (
         <>
             <Head>
-                <title>Popular | Game Center</title>
+                <title>Popular |Game Center</title>
             </Head>
             <Layout>
-                <MainContent pageTitle={'Upcoming'} keywords={'upcoming games, new games'}>
+                <MainContent pageTitle={'Popular'} keywords={'popular games, last games'}>
                     {status === 'success' && (
-                        <UpcomingGamesBlock>
+                        <PopularGamesBlock>
                             {
-                                upcomingGames && upcomingGames.map((game) => (
+                                popularGames && popularGames.map((game: gameType) => (
                                     <Game
                                         key={game.id}
                                         values={{ ...game }}
@@ -61,20 +64,20 @@ const Upcoming = React.memo(() => {
                                     />
                                 ))
                             }
-                        </UpcomingGamesBlock>
+                        </PopularGamesBlock>
                     )}
                     {
                         status === 'loading' && <Loader />
                     }
                     {
-                        status == 'success' && upcomingGames.length === 0 && <ErrorBlock title='Nothing was found :(' reloadButton />
+                        status == 'success' && popularGames.length === 0 && <ErrorBlock title='Nothing was found :(' reloadButton />
                     }
                     {
                         status === 'error' && <ErrorBlock title='Network error' reloadButton />
                     }
                     <div className="load-more">
                         {
-                            status === 'success' && upcomingGames.length !== 0 && (
+                            status === 'success' && popularGames.length !== 0 && (
                                 <Button
                                     name='Load more'
                                     blob='blob'
@@ -89,13 +92,14 @@ const Upcoming = React.memo(() => {
                             )
                         }
                     </div>
+
                 </MainContent>
             </Layout>
         </>
     );
 });
 
-const UpcomingGamesBlock = styled.div`
+const PopularGamesBlock = styled.div`
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
     grid-gap: 2rem;
@@ -105,4 +109,4 @@ const UpcomingGamesBlock = styled.div`
     }
 `;
 
-export default Upcoming;
+export default Popular;
